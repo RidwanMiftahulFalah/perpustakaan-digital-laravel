@@ -11,9 +11,9 @@ return new class extends Migration {
   public function up(): void {
     Schema::create('books', function (Blueprint $table) {
       $table->uuid('id')->primary();
-      $table->string('name');
+      $table->string('title');
       $table->foreignUuid('author_id')->constrained();
-      $table->date('published_date');
+      $table->date('publish_date');
       $table->timestamps();
     });
   }
