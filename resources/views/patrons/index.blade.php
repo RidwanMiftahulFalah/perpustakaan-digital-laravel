@@ -1,100 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
+<x-app-layout>
+  <x-slot name="header">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      {{ __('Patrons') }}
+    </h2>
+  </x-slot>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <div class="py-4">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="p-6 text-gray-900">
 
-  <title>Patrons Data</title>
-</head>
+          <a href="{{ route('patrons.create') }}"
+            class="inline-flex items-center mb-3 px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-500 focus:bg-emerald-500 active:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition ease-in-out duration-150">Add New Patron</a>
 
-<body>
+          <div class="max-w-screen overflow-auto">
+            <table class="w-full rounded-lg table-auto">
+              <thead class="bg-sky-800 text-white text-center">
+                <tr>
+                  <th class="py-2 px-2 rounded-tl-lg">#</th>
 
-  <div class="container col-5 bg-dark-subtle mt-3 mb-3 p-4 rounded-2">
-    <h3 class="text-center p-2">Patron's Data</h3>
+                  <th class="py-2 px-2">Name</th>
 
-    <form action="{{ route('patrons.store') }}" method="POST">
-      @csrf
+                  <th class="py-2 px-2">NIK</th>
 
-      <div class="mb-3">
-        <label for="name" class="form-label">Full Name</label>
-        <input type="text" class="form-control" name="name" id="name">
+                  <th class="py-2 px-2">Phone</th>
+
+                  <th class="py-2 px-2">Email</th>
+
+                  <th class="py-2 px-2">Birthdate</th>
+
+                  <th class="py-2 px-2">Address</th>
+
+                  <th class="py-2 px-2 rounded-tr-lg">Option</th>
+                </tr>
+              </thead>
+
+              <tbody class="text-center bg-slate-200">
+                @if ($patrons->count())
+                  @foreach ($patrons as $patron)
+                    <tr class="{{ $loop->iteration != $patrons->count() ? 'border-b border-sky-800' : '' }}">
+                      <td
+                        class="border-r border-r-sky-800 {{ $loop->iteration == $patrons->count() ? 'rounded-bl-lg' : '' }}">
+                        {{ $loop->iteration }}</td>
+
+                      <td>{{ $patron->name }}</td>
+
+                      <td>{{ $patron->nik }}</td>
+
+                      <td>{{ $patron->phone }}</td>
+
+                      <td>{{ $patron->email }}</td>
+
+                      <td>{{ $patron->birthdate }}</td>
+
+                      <td>{{ $patron->address }}</td>
+
+                      <td
+                        class="w-1/7 py-2
+                          border-l border-l-sky-800 {{ $loop->iteration === $patrons->count() ? 'rounded-br-lg' : '' }}">
+                        <ul>
+                          <li>
+                            <a href="{{ route('patrons.edit', $patron->id) }}"
+                              class="inline-flex items-center justify-center w-32 mb-1.5 py-1.5 bg-amber-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amber-400 focus:bg-amber-400 active:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 transition ease-in-out duration-150">Edit</a>
+                          </li>
+
+                          <li>
+                            <form action="{{ route('patrons.destroy', $patron->id) }}" method="POST">
+                              @csrf
+                              @method('DELETE')
+
+                              <button type="submit"
+                                class="inline-flex items-center justify-center w-32 py-1.5 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">Delete</button>
+                            </form>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                  @endforeach
+                @else
+                  <td colspan="4">Data not found.</td>
+                @endif
+              </tbody>
+            </table>
+          </div>
+
+        </div>
       </div>
-
-      <div class="mb-3">
-        <label for="nik" class="form-label">NIK</label>
-        <input type="text" class="form-control" name="nik" id="nik">
-      </div>
-
-      <div class="mb-3">
-        <label for="phone" class="form-label">Phone</label>
-        <input type="string" class="form-control" name="phone" id="phone">
-      </div>
-
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" name="email" id="email">
-      </div>
-
-      <div class="mb-3">
-        <label for="birthdate" class="form-label">Birthdate</label>
-        <input type="date" class="form-control" name="birthdate" id="birthdate">
-      </div>
-
-      <div class="mb-3">
-        <label for="address" class="form-label">Address</label>
-        <input type="text" class="form-control" name="address" id="address">
-      </div>
-
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    </div>
   </div>
-
-  <div class="container col-12">
-    <table class="table table-primary table-striped">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">NIK</th>
-          <th scope="col">Phone</th>
-          <th scope="col">Email</th>
-          <th scope="col">Birthdate</th>
-          <th scope="col">Address</th>
-          <th scope="col" class="pr-0">Options</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        @foreach ($patrons as $patron)
-          <tr>
-            <th scope="row">{{ $loop->iteration }}</th>
-            <td>{{ $patron->name }}</td>
-            <td>{{ $patron->nik }}</td>
-            <td>{{ $patron->phone }}</td>
-            <td>{{ $patron->email }}</td>
-            <td>{{ $patron->birthdate }}</td>
-            <td>{{ $patron->address }}</td>
-            <td>
-              <div class="d-flex flex-row gap-2">
-                <a href="{{ route('patrons.edit', $patron->id) }}" class="btn btn-warning">Edit</a>
-
-                <form action="{{ route('patrons.destroy', $patron->id) }}" method="post">
-                  @csrf
-                  @method('DELETE')
-
-                  <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-              </div>
-            </td>
-          </tr>
-        @endforeach
-      </tbody>
-    </table>
-  </div>
-</body>
-
-</html>
+</x-app-layout>

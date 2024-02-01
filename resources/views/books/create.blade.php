@@ -1,7 +1,7 @@
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-      {{ __('Edit Book Data') }}
+      {{ __('Add New Book') }}
     </h2>
   </x-slot>
 
@@ -10,10 +10,8 @@
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900">
 
-
-          <form action="{{ route('books.update', $book->id) }}" method="POST">
+          <form action="{{ route('books.store') }}" method="POST">
             @csrf
-            @method('PUT')
 
             <div class="mb-3">
               <label for="title" class="block font-medium text-sm text-gray-700">
@@ -21,7 +19,7 @@
               </label>
               <input type="text" name="title" id="title"
                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                value="{{ $book->title }}">
+                value="{{ old('title') }}">
             </div>
 
             <div class="mb-3">
@@ -31,7 +29,7 @@
               <select name="author_id" id="author_id"
                 class="block w-60 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500">
                 @foreach ($authors as $author)
-                  <option value="{{ $author->id }}" {{ $book->author_id === $author->id ? 'selected' : '' }}>
+                  <option value="{{ $author->id }}">
                     {{ $author->name }}
                   </option>
                 @endforeach
@@ -44,7 +42,7 @@
               </label>
               <input type="date" name="publish_date" id="publish_date"
                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                value="{{ $book->publish_date }}">
+                value="{{ old('publish_date') }}">
             </div>
 
             <button type="submit"

@@ -1,7 +1,7 @@
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-      {{ __('Transaction History') }}
+      {{ __('Transactions History') }}
     </h2>
   </x-slot>
 
@@ -53,7 +53,7 @@
                       </td>
 
                       <td
-                        class="py-3 px-2 border-l border-l-sky-800 {{ $loop->iteration === $transactions->count() ? 'rounded-br-lg' : '' }}">
+                        class="w-1/5 py-3 px-2 border-l border-l-sky-800 {{ $loop->iteration === $transactions->count() ? 'rounded-br-lg' : '' }}">
                         @if ($transaction->status == 'On Loan')
                           <form action="{{ route('transactions.update', $transaction->id) }}" method="POST">
                             @csrf

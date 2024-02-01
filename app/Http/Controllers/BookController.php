@@ -14,16 +14,17 @@ class BookController extends Controller {
    */
   public function index() {
     $books = Book::all();
-    $authors = Author::all();
 
-    return view('books.index', compact('books', 'authors'));
+    return view('books.index', compact('books'));
   }
 
   /**
    * Show the form for creating a new resource.
    */
   public function create() {
-    //
+    $authors = Author::all();
+
+    return view('books.create', compact('authors'));
   }
 
   /**

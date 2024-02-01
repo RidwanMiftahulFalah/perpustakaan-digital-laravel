@@ -1,7 +1,7 @@
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-      {{ __('Edit Patron Data') }}
+      {{ __('Add New Patron') }}
     </h2>
   </x-slot>
 
@@ -10,9 +10,8 @@
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900">
 
-          <form action="{{ route('patrons.update', $patron->id) }}" method="POST">
+          <form action="{{ route('patrons.store') }}" method="POST">
             @csrf
-            @method('PUT')
 
             <div class="mb-3">
               <label for="name" class="block font-medium text-sm text-gray-700">
@@ -20,7 +19,7 @@
               </label>
               <input type="text" name="name" id="name"
                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                value="{{ $patron->name }}">
+                value="{{ old('name') }}">
             </div>
 
             <div class="mb-3">
@@ -29,7 +28,7 @@
               </label>
               <input type="text" name="nik" id="nik"
                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                value="{{ $patron->nik }}">
+                value="{{ old('nik') }}">
             </div>
 
             <div class="mb-3">
@@ -38,7 +37,7 @@
               </label>
               <input type="text" name="phone" id="phone"
                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                value="{{ $patron->phone }}">
+                value="{{ old('phone') }}">
             </div>
 
             <div class="mb-3">
@@ -47,7 +46,7 @@
               </label>
               <input type="email" name="email" id="email"
                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                value="{{ $patron->email }}">
+                value="{{ old('email') }}">
             </div>
 
             <div class="mb-3">
@@ -56,7 +55,7 @@
               </label>
               <input type="date" name="birthdate" id="birthdate"
                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                value="{{ $patron->birthdate }}">
+                value="{{ old('birthdate') }}">
             </div>
 
             <div class="mb-3">
@@ -64,7 +63,7 @@
                 Address
               </label>
               <textarea name="address" id="address" cols="30" rows="5"
-                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">{{ $patron->address }}</textarea>
+                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"></textarea>
             </div>
 
             <button type="submit"

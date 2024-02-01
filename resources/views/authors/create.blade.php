@@ -1,7 +1,7 @@
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-      {{ __('Edit Author Data') }}
+      {{ __('Add New Author') }}
     </h2>
   </x-slot>
 
@@ -10,9 +10,8 @@
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900">
 
-          <form action="{{ route('authors.update', $author->id) }}" method="POST">
+          <form action="{{ route('authors.store') }}" method="POST">
             @csrf
-            @method('PUT')
 
             <div class="mb-3">
               <label for="name" class="block font-medium text-sm text-gray-700">
@@ -20,7 +19,7 @@
               </label>
               <input type="text" name="name" id="name"
                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                value="{{ $author->name }}">
+                value="{{ old('name') }}">
             </div>
 
             <button type="submit"
