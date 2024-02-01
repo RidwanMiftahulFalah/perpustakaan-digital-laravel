@@ -11,4 +11,8 @@ class Patron extends Model {
   use HasUuids;
 
   protected $guarded = ['id'];
+
+  public function transactions() {
+    return $this->hasMany(Transaction::class);
+  }
 }

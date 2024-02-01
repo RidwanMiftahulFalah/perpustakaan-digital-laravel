@@ -1,84 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
+<x-app-layout>
+  <x-slot name="header">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      {{ __('Books') }}
+    </h2>
+  </x-slot>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <div class="py-4">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="p-6 text-gray-900">
+          <form action="{{ route('books.store') }}" method="POST">
+            @csrf
 
-  <title>Books Data</title>
-</head>
+            <div class="mb-3">
+              <label for="title" class="block font-medium text-sm text-gray-700">
+                Title
+              </label>
+              <input type="text" name="title" id="title"
+                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                value="{{ old('title') }}">
+            </div>
 
-<body>
+            <div class="mb-3">
+              <label for="author" class="block font-medium text-sm text-gray-700">
+                Author
+              </label>
+              <select name="author_id" id="author_id"
+                class="block w-60 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                @foreach ($authors as $author)
+                  <option value="{{ $author->id }}">
+                    {{ $author->name }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
 
-  <div class="container col-5 bg-dark-subtle mt-3 mb-3 p-4 rounded-2">
-    <h3 class="text-center p-2">Book's Data</h3>
+            <div class="mb-3">
+              <label for="publish_date" class="block font-medium text-sm text-gray-700">
+                Publication Date
+              </label>
+              <input type="date" name="publish_date" id="publish_date"
+                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                value="{{ old('publish_date') }}">
+            </div>
 
-    <form action="{{ route('books.store') }}" method="POST">
-      @csrf
+            <button type="submit"
+              class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Submit</button>
+          </form>
 
-      <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" class="form-control" name="title" id="title">
+          <div class="max-w-screen overflow-auto">
+            <table class="w-full rounded-lg table-auto">
+              <thead class="bg-sky-800 text-white text-center">
+                <tr>
+                  <th class="py-2 px-2 rounded-tl-lg">#</th>
+
+                  <th class="py-2 px-2">Title</th>
+
+                  <th class="py-2 px-2">Author</th>
+
+                  <th class="py-2 px-2">Publication Date</th>
+
+                  <th class="py-2 px-2 rounded-tr-lg">Option</th>
+                </tr>
+              </thead>
+
+              <tbody class="text-center bg-slate-200">
+                @if ($books->count())
+                  @foreach ($books as $book)
+                    <tr class="{{ $loop->iteration != $books->count() ? 'border-b border-sky-800' : '' }}">
+                      <td
+                        class="border-r border-r-sky-800 {{ $loop->iteration == $books->count() ? 'rounded-bl-lg' : '' }}">
+                        {{ $loop->iteration }}</td>
+
+                      <td>{{ $book->title }}</td>                      
+
+                      <td>{{ $book->author->name }}</td>  
+
+                      <td>{{ $book->publish_date }}</td>                      
+
+                      <td class="w-1/5 py-2
+                          border-l border-l-sky-800 {{ $loop->iteration === $books->count() ? 'rounded-br-lg' : '' }}">
+                        <ul>
+                          <li>
+                            <a href="{{ route('books.edit', $book->id) }}"
+                              class="inline-flex items-center justify-center w-32 mb-1.5 py-1.5 bg-amber-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amber-400 focus:bg-amber-400 active:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 transition ease-in-out duration-150">Edit</a>
+                          </li>
+
+                          <li>
+                            <form action="{{ route('books.destroy', $book->id) }}" method="POST">
+                              @csrf
+                              @method('DELETE')
+
+                              <button type="submit"
+                                class="inline-flex items-center justify-center w-32 py-1.5 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">Delete</button>
+                            </form>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                  @endforeach
+                @else
+                  <td colspan="4">Data not found.</td>
+                @endif
+              </tbody>
+            </table>
+          </div>
+
+        </div>
       </div>
-
-      <div class="mb-3">
-        <label for="author_id" class="form-label">Author</label>
-        <select class="form-select" name="author_id" id="author_id">
-          @foreach ($authors as $author)
-            <option value="{{ $author->id }}">
-              {{ $author->name }}
-            </option>
-          @endforeach
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label for="publish_date" class="form-label">Publication Date</label>
-        <input type="date" class="form-control" name="publish_date" id="publish_date">
-      </div>
-
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    </div>
   </div>
-
-  <div class="container col-10">
-    <table class="table table-primary table-striped">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Title</th>
-          <th scope="col">Author</th>
-          <th scope="col">Publication Date</th>
-          <th scope="col" class="pr-0">Options</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        @foreach ($books as $book)
-          <tr>
-            <th scope="row">{{ $loop->iteration }}</th>
-            <td>{{ $book->title }}</td>
-            <td>{{ $book->author->name }}</td>
-            <td>{{ $book->publish_date }}</td>
-            <td class="d-flex flex-row gap-2">
-              <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning">Edit</a>
-
-              <form action="{{ route('books.destroy', $book->id) }}" method="post">
-                @csrf
-                @method('DELETE')
-
-                <button type="submit" class="btn btn-danger">Delete</button>
-              </form>
-            </td>
-          </tr>
-        @endforeach
-
-      </tbody>
-    </table>
-  </div>
-</body>
-
-</html>
+</x-app-layout>
