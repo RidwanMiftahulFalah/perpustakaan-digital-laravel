@@ -72,13 +72,14 @@
                         class="border-r border-r-sky-800 {{ $loop->iteration == $books->count() ? 'rounded-bl-lg' : '' }}">
                         {{ $loop->iteration }}</td>
 
-                      <td>{{ $book->title }}</td>                      
+                      <td>{{ $book->title }}</td>
 
-                      <td>{{ $book->author->name }}</td>  
+                      <td>{{ $book->author->name }}</td>
 
-                      <td>{{ $book->publish_date }}</td>                      
+                      <td>{{ $book->publish_date }}</td>
 
-                      <td class="w-1/5 py-2
+                      <td
+                        class="w-1/5 py-2
                           border-l border-l-sky-800 {{ $loop->iteration === $books->count() ? 'rounded-br-lg' : '' }}">
                         <ul>
                           <li>

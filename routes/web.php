@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('patrons', PatronController::class);
     
+    Route::get('/transactions/history', [TransactionController::class, 'history'])->name('transactions.history');
     Route::resource('transactions', TransactionController::class);
 });
 

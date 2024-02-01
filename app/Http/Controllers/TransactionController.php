@@ -4,63 +4,81 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use App\Models\Book;
+use App\Models\Patron;
 use App\Models\Transaction;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
-class TransactionController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+class TransactionController extends Controller {
+  public function history() {
+    $transactions = Transaction::all();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    return view('transactions.history', compact('transactions'));
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreTransactionRequest $request)
-    {
-        //
-    }
+  /**
+   * Display a listing of the resource.
+   */
+  public function index() {
+    $patrons = Patron::all();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Transaction $transaction)
-    {
-        //
-    }
+    return view('transactions.index', compact('patrons'));
+  }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
+  /**
+   * Show the form for creating a new resource.
+   */
+  public function create(Request $request) {
+    $books = Book::all();
+    $patron = Patron::find($request->patron_id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTransactionRequest $request, Transaction $transaction)
-    {
-        //
-    }
+    return view('transactions.create', compact('books', 'patron'));
+  }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
-    }
+  /**
+   * Store a newly created resource in storage.
+   */
+  public function store(Request $request) {
+    Transaction::create([
+      'book_id' => $request->book_id,
+      'patron_id' => $request->patron_id,
+      'date' => Carbon::now(),
+      'status' => 'On Loan',
+    ]);
+
+    return redirect()->route('transactions.history')->with('message', 'Transaction Success');
+  }
+
+  /**
+   * Display the specified resource.
+   */
+  public function show(Transaction $transaction) {
+    //
+  }
+
+  /**
+   * Show the form for editing the specified resource.
+   */
+  public function edit(Transaction $transaction) {
+    //
+  }
+
+  /**
+   * Update the specified resource in storage.
+   */
+  public function update(Request $request, Transaction $transaction) {
+    $transaction->update([
+      'status' => 'Returned',
+    ]);
+
+    return redirect()->route('transactions.history')->with('message', 'Transaction Completed');
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   */
+  public function destroy(Transaction $transaction) {
+    //
+  }
 }
