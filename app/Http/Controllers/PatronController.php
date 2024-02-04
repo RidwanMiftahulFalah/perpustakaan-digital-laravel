@@ -64,9 +64,10 @@ class PatronController extends Controller {
    * Remove the specified resource from storage.
    */
   public function destroy(Patron $patron) {
-    $patron->deleteOrFail();
+    $message = 'Patron Data Successfully ' . ($patron->is_active ? 'deactivated' : 'activated');
 
-    return redirect()->route('patrons.index')->with('message', 'Patron Data Deleted Successfully');
+    $patron->update($patron->is_active ? ['is_active' => 0] : ['is_active' => 1]);
+    return redirect()->route('patrons.index')->with('message', $message);
 
   }
 }

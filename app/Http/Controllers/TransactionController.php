@@ -9,6 +9,7 @@ use App\Models\Patron;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller {
   public function history() {
@@ -22,9 +23,9 @@ class TransactionController extends Controller {
    */
   public function index(Request $request) {
     if ($request->search) {
-      $patrons = Patron::where('name', 'like', '%' . $request->search . '%')->get();
+      $patrons = Patron::where('name', 'like', '%' . $request->search . '%')->where('is_active', '=', 1)->get();
     } else {
-      $patrons = Patron::all();
+      $patrons = Patron::where('is_active', '=', 1)->get();
     }
 
     return view('transactions.index', compact('patrons'));
@@ -35,9 +36,9 @@ class TransactionController extends Controller {
    */
   public function create(Request $request) {
     if ($request->search) {
-      $books = Book::where('title', 'like', '%' . $request->search . '%')->get();
+      $books = Book::where('title', 'like', '%' . $request->search . '%')->where('is_active', '=', 1)->get();
     } else {
-      $books = Book::all();
+      $books = Book::where('is_active', '=', 1)->get();
     }
     $patron = Patron::find($request->patron_id);
 
@@ -49,6 +50,7 @@ class TransactionController extends Controller {
    */
   public function store(Request $request) {
     Transaction::create([
+      'user_id' => Auth::id(),
       'book_id' => $request->book_id,
       'patron_id' => $request->patron_id,
       'date' => Carbon::now(),

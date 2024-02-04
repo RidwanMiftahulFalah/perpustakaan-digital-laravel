@@ -11,13 +11,15 @@
         <div class="p-6 text-gray-900">
 
           <a href="{{ route('transactions.index') }}"
-            class="inline-flex items-center mb-3 px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-500 focus:bg-emerald-500 active:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition ease-in-out duration-150">New Transaction</a>
+            class="inline-flex items-center mb-3 px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-500 focus:bg-emerald-500 active:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition ease-in-out duration-150">Issue a Book</a>
 
           <div class="max-w-screen overflow-auto">
             <table class="w-full rounded-lg table-auto">
               <thead class="bg-sky-800 text-white text-center">
                 <tr>
                   <th class="py-2 px-2 rounded-tl-lg">#</th>
+
+                  <th class="py-2 px-2">User</th>
 
                   <th class="py-2 px-2">Patron Name</th>
 
@@ -38,6 +40,8 @@
                       <td
                         class="border-r border-r-sky-800 {{ $loop->iteration == $transactions->count() ? 'rounded-bl-lg' : '' }}">
                         {{ $loop->iteration }}</td>
+
+                      <td>{{ $transaction->user->name }}</td>
 
                       <td>{{ $transaction->patron->name }}</td>
 
@@ -61,20 +65,20 @@
 
                             <button type="submit"
                               class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-500 focus:bg-emerald-500 active:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                              Finish Transaction
+                              Mark as Returned
                             </button>
                           </form>
                         @else
                           <div
                             class="inline-flex items-center px-4 py-2 bg-slate-400 border border-transparent rounded-md font-semibold text-xs text-slate-200 uppercase tracking-widest ">
-                            Finish Transaction
+                            Mark as Returned
                           </div>
                         @endif
                       </td>
                     </tr>
                   @endforeach
                 @else
-                  <td colspan="4">Data not found.</td>
+                  <td colspan="7" class="h-14">Data not found.</td>
                 @endif
               </tbody>
             </table>

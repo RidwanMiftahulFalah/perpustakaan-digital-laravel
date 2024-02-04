@@ -64,8 +64,9 @@ class AuthorController extends Controller {
    * Remove the specified resource from storage.
    */
   public function destroy(Author $author) {
-    $author->deleteOrFail();
+    $message = 'Author Data Successfully ' . ($author->is_active ? 'deactivated' : 'activated');
 
-    return redirect()->route('authors.index')->with('message', 'Author Data Deleted Successfully');
+    $author->update($author->is_active ? ['is_active' => 0] : ['is_active' => 1]);
+    return redirect()->route('authors.index')->with('message', $message);
   }
 }

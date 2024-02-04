@@ -10,6 +10,13 @@
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900">
 
+          @if (session('message'))
+            <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 1500)"
+              class="p-3 mb-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
+              <span class="font-semibold">{{ session('message') }}</span>
+            </div>
+          @endif
+
           <a href="{{ route('books.create') }}"
             class="inline-flex items-center mb-3 px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-500 focus:bg-emerald-500 active:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition ease-in-out duration-150">Add
             New Book</a>
@@ -48,6 +55,8 @@
 
                   <th class="py-2 px-2">Publication Date</th>
 
+                  <th class="py-2 px-2">Status</th>
+
                   <th class="py-2 px-2 rounded-tr-lg">Option</th>
                 </tr>
               </thead>
@@ -66,6 +75,13 @@
 
                       <td>{{ $book->publish_date }}</td>
 
+                      <td>
+                        <span
+                          class="{{ $book->is_active ? 'bg-green-300' : 'bg-red-300' }} {{ $book->is_active ? 'text-green-900' : 'text-red-900' }} text-md font-extrabold px-3 py-1 rounded">
+                          {{ $book->is_active ? 'Active' : 'Inactive' }}
+                        </span>
+                      </td>
+
                       <td
                         class="w-1/5 py-2
                           border-l border-l-sky-800 {{ $loop->iteration === $books->count() ? 'rounded-br-lg' : '' }}">
@@ -81,7 +97,7 @@
                               @method('DELETE')
 
                               <button type="submit"
-                                class="inline-flex items-center justify-center w-32 py-1.5 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">Delete</button>
+                                class="inline-flex items-center justify-center w-32 py-1.5 {{ $book->is_active ? 'bg-red-600' : 'bg-emerald-600' }} border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:{{ $book->is_active ? 'bg-red-500' : 'bg-emerald-500' }} focus:{{ $book->is_active ? 'bg-red-500' : 'bg-emerald-500' }} active:{{ $book->is_active ? 'bg-red-700' : 'bg-emerald-700' }} focus:outline-none focus:ring-2 focus:{{ $book->is_active ? 'ring-red-500' : 'ring-emerald-500' }} focus:ring-offset-2 transition ease-in-out duration-150">{{ $book->is_active ? 'Deactivate' : 'Activate' }}</button>
                             </form>
                           </li>
                         </ul>
@@ -89,7 +105,7 @@
                     </tr>
                   @endforeach
                 @else
-                  <td colspan="4">Data not found.</td>
+                  <td colspan="5" class="h-14">Data not found.</td>
                 @endif
               </tbody>
             </table>

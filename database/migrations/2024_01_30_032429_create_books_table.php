@@ -14,6 +14,7 @@ return new class extends Migration {
       $table->string('title');
       $table->foreignUuid('author_id')->constrained();
       $table->date('publish_date');
+      $table->boolean('is_active')->default(true);
       $table->timestamps();
     });
   }

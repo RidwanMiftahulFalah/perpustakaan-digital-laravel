@@ -12,6 +12,7 @@ return new class extends Migration {
     Schema::create('authors', function (Blueprint $table) {
       $table->uuid('id')->primary();
       $table->string('name');
+      $table->boolean('is_active')->default(true);
       $table->timestamps();
     });
   }

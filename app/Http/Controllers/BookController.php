@@ -69,8 +69,9 @@ class BookController extends Controller {
    * Remove the specified resource from storage.
    */
   public function destroy(Book $book) {
-    $book->deleteOrFail();
+    $message = 'Book Data Successfully ' . ($book->is_active ? 'deactivated' : 'activated');
 
-    return redirect()->route('books.index')->with('message', 'Book Data Deleted Successfully');
+    $book->update($book->is_active ? ['is_active' => 0] : ['is_active' => 1]);
+    return redirect()->route('books.index')->with('message', $message);
   }
 }

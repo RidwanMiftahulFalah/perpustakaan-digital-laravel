@@ -120,7 +120,7 @@
                     </tr>
                   @endforeach
                 @else
-                  <td colspan="4">Data not found.</td>
+                  <td colspan="5" class="h-14">Data not found.</td>
                 @endif
               </tbody>
             </table>

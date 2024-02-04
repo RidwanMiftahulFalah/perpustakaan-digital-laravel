@@ -10,6 +10,13 @@
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900">
 
+          @if (session('message'))
+            <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 1500)"
+              class="p-3 mb-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
+              <span class="font-semibold">{{ session('message') }}</span>
+            </div>
+          @endif
+
           <div class="mb-3 w-1/2">
             <form action="{{ route('transactions.index') }}" method="get">
               @csrf
@@ -79,7 +86,7 @@
                     </tr>
                   @endforeach
                 @else
-                  <td colspan="4">Data not found.</td>
+                  <td colspan="6" class="h-14">Data not found.</td>
                 @endif
               </tbody>
             </table>

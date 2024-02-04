@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email', 40);
             $table->date('birthdate');
             $table->text('address');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
