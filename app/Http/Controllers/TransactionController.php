@@ -20,8 +20,12 @@ class TransactionController extends Controller {
   /**
    * Display a listing of the resource.
    */
-  public function index() {
-    $patrons = Patron::all();
+  public function index(Request $request) {
+    if ($request->search) {
+      $patrons = Patron::where('name', 'like', '%' . $request->search . '%')->get();
+    } else {
+      $patrons = Patron::all();
+    }
 
     return view('transactions.index', compact('patrons'));
   }
@@ -30,7 +34,11 @@ class TransactionController extends Controller {
    * Show the form for creating a new resource.
    */
   public function create(Request $request) {
-    $books = Book::all();
+    if ($request->search) {
+      $books = Book::where('title', 'like', '%' . $request->search . '%')->get();
+    } else {
+      $books = Book::all();
+    }
     $patron = Patron::find($request->patron_id);
 
     return view('transactions.create', compact('books', 'patron'));

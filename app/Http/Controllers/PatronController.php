@@ -11,8 +11,13 @@ class PatronController extends Controller {
   /**
    * Display a listing of the resource.
    */
-  public function index() {
-    $patrons = Patron::all();
+  public function index(Request $request) {
+    if ($request->search) {
+      $patrons = Patron::where('name', 'like', '%' . $request->search . '%')->get();
+    } else {
+      $patrons = Patron::all();
+    }
+
     return view('patrons.index', compact('patrons'));
   }
 

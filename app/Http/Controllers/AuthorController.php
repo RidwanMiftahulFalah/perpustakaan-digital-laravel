@@ -11,8 +11,13 @@ class AuthorController extends Controller {
   /**
    * Display a listing of the resource.
    */
-  public function index() {
-    $authors = Author::all();
+  public function index(Request $request) {
+    if ($request->search) {
+      $authors = Author::where('name', 'like', '%' . $request->search . '%')->get();
+    } else {
+      $authors = Author::all();
+    }
+
     return view('authors.index', compact('authors'));
   }
 
@@ -62,6 +67,5 @@ class AuthorController extends Controller {
     $author->deleteOrFail();
 
     return redirect()->route('authors.index')->with('message', 'Author Data Deleted Successfully');
-    
   }
 }
